@@ -28,7 +28,7 @@ public class Rocket : MonoBehaviour
 
         if (Input.GetKey(KeyCode.A))
         {
-            print("Rotating Left");
+            transform.Rotate(Vector3.forward);
             if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.Space))
             {
                 print("Thrusting and rotating left");
@@ -36,7 +36,7 @@ public class Rocket : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            print("Rotating Right");
+            transform.Rotate(Vector3.back);
             if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.Space))
             {
                 print("Thrusting and rotating right");
