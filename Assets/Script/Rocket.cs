@@ -4,10 +4,13 @@ using UnityEngine.SceneManagement;
 public class Rocket : MonoBehaviour
 {
     [SerializeField] float rcsThrust = 100f;
-    [SerializeField] float mainThrust = 1000f;
+    [SerializeField] float mainThrust = 10f;
+    [SerializeField] AudioClip mainEngine;
+    [SerializeField] AudioClip death;
+    [SerializeField] AudioClip levelUp;
 
     Rigidbody rigidBody;
-    AudioSource rocketAudio;
+    AudioSource audioSource;
 
     enum State { Alive, Dying, Transcending};
     State state = State.Alive;
@@ -16,7 +19,7 @@ public class Rocket : MonoBehaviour
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
-        rocketAudio = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -25,8 +28,8 @@ public class Rocket : MonoBehaviour
         // TODO somewhere stop sound on death
         if (state == State.Alive)
         {
-            Thrust();
-            Rotate();
+            RespondToThrustInput();
+            RespondToRotateInput();
         }
     }
 
@@ -40,15 +43,27 @@ public class Rocket : MonoBehaviour
                 // do nothing
                 break;
             case "Finish":
-                state = State.Transcending;
-                Invoke("LoadNextLevel", 1f); // parameterize time
+                StartLevelUpSequence();
                 break;
             default:
-                state = State.Dying;
-                Invoke ("LoadFirstLevel", 1f); // parameterize time
+                StartDeathSequence();
                 break;
-
         }
+    }
+
+    private void StartLevelUpSequence()
+    {
+        state = State.Transcending;
+        audioSource.PlayOneShot(levelUp);
+        Invoke("LoadNextLevel", 2f); // parameterize time
+    }
+
+    private void StartDeathSequence()
+    {
+        state = State.Dying;
+        audioSource.Stop();
+        audioSource.PlayOneShot(death);
+        Invoke("LoadFirstLevel", 2.5f); // parameterize time
     }
 
     private void LoadFirstLevel()
@@ -61,26 +76,30 @@ public class Rocket : MonoBehaviour
         SceneManager.LoadScene(1); //TODO allow for more than two levels
     }
 
-    private void Thrust()
+    private void RespondToThrustInput()
     {
         float thrustThisFrame = mainThrust * Time.deltaTime;
 
         if (Input.GetKey(KeyCode.Space))    // Can thrust while rotating
         {
-            rigidBody.AddRelativeForce(Vector3.up * thrustThisFrame);
-            if (!rocketAudio.isPlaying)      // So it doesn't layer
-            {
-                rocketAudio.Play();
-            }
-
+            ApplyThrust();
         }
         else
         {
-            rocketAudio.Stop();
+            audioSource.Stop();
         }
     }
 
-    private void Rotate()
+    private void ApplyThrust()
+    {
+        rigidBody.AddRelativeForce(Vector3.up * mainThrust);
+        if (!audioSource.isPlaying)      // So it doesn't layer
+        {
+            audioSource.PlayOneShot(mainEngine);
+        }
+    }
+
+    private void RespondToRotateInput()
     {
         rigidBody.freezeRotation = true; // take manual control of rotation
 
