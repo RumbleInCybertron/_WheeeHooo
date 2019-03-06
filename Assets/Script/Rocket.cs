@@ -9,6 +9,10 @@ public class Rocket : MonoBehaviour
     [SerializeField] AudioClip death;
     [SerializeField] AudioClip levelUp;
 
+    [SerializeField] ParticleSystem mainEngineParticles;
+    [SerializeField] ParticleSystem levelUpParticles;
+    [SerializeField] ParticleSystem deathParticles;
+
     Rigidbody rigidBody;
     AudioSource audioSource;
 
@@ -25,7 +29,6 @@ public class Rocket : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // TODO somewhere stop sound on death
         if (state == State.Alive)
         {
             RespondToThrustInput();
@@ -55,6 +58,7 @@ public class Rocket : MonoBehaviour
     {
         state = State.Transcending;
         audioSource.PlayOneShot(levelUp);
+        levelUpParticles.Play();
         Invoke("LoadNextLevel", 2f); // parameterize time
     }
 
@@ -63,6 +67,7 @@ public class Rocket : MonoBehaviour
         state = State.Dying;
         audioSource.Stop();
         audioSource.PlayOneShot(death);
+        deathParticles.Play();
         Invoke("LoadFirstLevel", 2.5f); // parameterize time
     }
 
@@ -87,16 +92,18 @@ public class Rocket : MonoBehaviour
         else
         {
             audioSource.Stop();
+            mainEngineParticles.Stop();
         }
     }
 
     private void ApplyThrust()
     {
-        rigidBody.AddRelativeForce(Vector3.up * mainThrust);
+        rigidBody.AddRelativeForce(Vector3.forward * mainThrust);
         if (!audioSource.isPlaying)      // So it doesn't layer
         {
             audioSource.PlayOneShot(mainEngine);
         }
+        mainEngineParticles.Play();
     }
 
     private void RespondToRotateInput()
@@ -107,11 +114,11 @@ public class Rocket : MonoBehaviour
 
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Rotate(Vector3.forward * rotationThisFrame);
+            transform.Rotate(Vector3.up * rotationThisFrame);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            transform.Rotate(Vector3.back * rotationThisFrame);
+            transform.Rotate(Vector3.down * rotationThisFrame);
         }
 
         rigidBody.freezeRotation = false; // resume physics control of rotation
