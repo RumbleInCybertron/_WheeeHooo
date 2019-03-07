@@ -1616,20 +1616,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Directional Light
       objectReference: {fileID: 0}
+    - target: {fileID: 831141773333386883, guid: 1fdc162c3506da7429a58aace7e1bdc3,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 831141773333386883, guid: 1fdc162c3506da7429a58aace7e1bdc3,
+        type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 831141773333386882, guid: 1fdc162c3506da7429a58aace7e1bdc3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.11
+      value: 28.7
       objectReference: {fileID: 0}
     - target: {fileID: 831141773333386882, guid: 1fdc162c3506da7429a58aace7e1bdc3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.55
+      value: 85.8
       objectReference: {fileID: 0}
     - target: {fileID: 831141773333386882, guid: 1fdc162c3506da7429a58aace7e1bdc3,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.66
+      value: -21
       objectReference: {fileID: 0}
     - target: {fileID: 831141773333386882, guid: 1fdc162c3506da7429a58aace7e1bdc3,
         type: 3}

@@ -246,7 +246,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rcsThrust: 250
-  mainThrust: 50
+  mainThrust: 2000
+  levelLoadDelay: 2.5
   mainEngine: {fileID: 8300000, guid: 8e747aa15134135499cf0cbb7b5cd6c7, type: 3}
   death: {fileID: 8300000, guid: 83e3cf9ef5c3e494db8ec158e0cfe310, type: 3}
   levelUp: {fileID: 8300000, guid: 52c0a544bed5bcd49b56042c2d1db078, type: 3}
